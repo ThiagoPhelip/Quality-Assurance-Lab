@@ -1,4 +1,5 @@
 🧪 ** Gerenciamento de Testes com Qase.io**
+
 📌 Sobre o Qase.io
 
 O Qase.io é uma ferramenta moderna e intuitiva de gerenciamento de testes, amplamente utilizada por times de QA, desenvolvimento e produto para organizar, executar e acompanhar testes de software de forma eficiente.
@@ -64,4 +65,5 @@ Taxa de falhas
 Progresso por sprint ou release
 
 Qualidade geral do produto
+
 
