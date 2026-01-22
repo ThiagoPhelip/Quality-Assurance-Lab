@@ -1,4 +1,4 @@
-🧪 ** Gerenciamento de Testes com Qase.io**
+🧪 **Gerenciamento de Testes com Qase.io**
 
 📌 Sobre o Qase.io
 
@@ -65,5 +65,6 @@ Taxa de falhas
 Progresso por sprint ou release
 
 Qualidade geral do produto
+
 
 
