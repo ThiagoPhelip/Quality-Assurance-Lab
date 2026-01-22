@@ -65,6 +65,7 @@ Servir como:
 - 🚀 Apoio para evolução profissional na área de Qualidade de Software
 
 ---
+
 📁 Estrutura de Pastas do Repositório (QA)
 qa-testing-repository
 │
@@ -127,9 +128,7 @@ qa-testing-repository
 ├── 📄 README.md
 └── 📄 .gitignore
 
-🏷️ Badges para o README.md (GitHub)
-
-Coloque logo abaixo do título no README.
+---
 
 ![QA](https://img.shields.io/badge/Quality%20Assurance-QA-blue)
 ![Tests](https://img.shields.io/badge/Software%20Testing-Automated%20%7C%20Manual-green)
@@ -141,7 +140,9 @@ Coloque logo abaixo do título no README.
 ![Bug](https://img.shields.io/badge/Bug%20Hunting-Enabled-red)
 ![Learning](https://img.shields.io/badge/Continuous-Learning-blueviolet)
 
-🧠 Badges Extras (opcionais, para portfólio)
+---
+
+🧠
 ![Status](https://img.shields.io/badge/Status-Active-success)
 ![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen)
 ![GitHub Repo Size](https://img.shields.io/github/repo-size/SEU_USUARIO/SEU_REPOSITORIO)
