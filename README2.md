@@ -111,7 +111,7 @@ qa-testing-repository
 ![Last Commit](https://img.shields.io/github/last-commit/YOUR_USERNAME/YOUR_REPOSITORY)
 
 ---
-**![Status](https://img.shields.io/badge/Status-Active-success)
+![Status](https://img.shields.io/badge/Status-Active-success)
 ![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen)
 ![Repo Size](https://img.shields.io/github/repo-size/YOUR_USERNAME/YOUR_REPOSITORY)
 ![Last Commit](https://img.shields.io/github/last-commit/YOUR_USERNAME/YOUR_REPOSITORY)
