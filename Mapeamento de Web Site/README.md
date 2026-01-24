@@ -118,3 +118,6 @@ Exemplo de mapeamento em fluxograma.
  └── 📞 Contato
       ├── 📝 Formulário
       └── ✅ Mensagem enviada
+
+Uma melhor maneira, é utilizar programas para criar um mapa mental, em paginas web, dando uma visão mais ampla e rapida.
+Link Recomendado https://mapify.so/pt
