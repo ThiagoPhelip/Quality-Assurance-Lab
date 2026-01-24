@@ -77,6 +77,7 @@ Torna o time mais eficiente ⚡
 ---
 
 Exemplo de mapeamento em fluxograma.
+
 🌐 HOME
  ├── 🔐 Login
  │    ├── ✅ Login válido
