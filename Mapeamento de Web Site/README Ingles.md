@@ -1,4 +1,4 @@
-Advantages of website mapping done by a QA 🔍🧪
+**Advantages of website mapping done by a QA 🔍🧪**
 
 Website mapping, when performed by a QA (Quality Assurance professional), goes far beyond listing pages. It provides a quality-focused, risk-aware, and user-centered view of the product 👤✨
 
