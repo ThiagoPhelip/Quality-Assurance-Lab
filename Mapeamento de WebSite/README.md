@@ -1,4 +1,5 @@
-**O mapeamento de website feito por um QA traz muitas vantagens para o produto, para o time e para o negócio como um todo. Olha só 👇**
+**O mapeamento de website feito por um QA traz muitas vantagens para o produto, para o time e para o negócio como um todo. 
+Olha só 👇**
 
 🔍 Visão completa do sistema
 
