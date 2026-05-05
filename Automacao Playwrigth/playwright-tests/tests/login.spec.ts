@@ -1,16 +1,31 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
+import { users } from '../fixtures/users';
 
-test('deve permitir login com credenciais válidas', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('link', { name: ' Login' }).click();
-  await page.locator('#user').click();
-  await page.locator('#user').fill('teste@teste.com');
-  await page.locator('#password').click();
-  await page.locator('#password').fill('123456');
-  await page.getByRole('button', { name: 'login' }).click();
-  await page.getByRole('heading', { name: 'Login realizado' }).click();
-  await page.getByText('Olá, teste@teste.com').click();
-  await page.getByRole('button', { name: 'OK' }).click();
+test.describe('Login Flow - Automation Practice', () => {
+  test('@smoke should access login page', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.open();
+
+    await expect(page).toHaveURL(/login/);
+  });
+
+  test('@regression should try login with valid credentials', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.open();
+    await loginPage.login(users.valid.email, users.valid.password);
+
+    await expect(page).not.toHaveURL(/error/);
+  });
+
+  test('@negative should show error for invalid credentials', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.open();
+    await loginPage.login(users.invalid.email, users.invalid.password);
+
+    await expect(loginPage.errorMessage).toBeVisible();
+  });
 });
-
-
