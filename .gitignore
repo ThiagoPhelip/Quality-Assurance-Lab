@@ -8,7 +8,8 @@ cypress/screenshots/
 cypress/downloads/
 reports/
 results/
+.tmp-dashboard/
+public/
 *.log
 .env
 .DS_Store
-

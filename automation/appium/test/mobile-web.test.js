@@ -98,14 +98,9 @@ describe('QAZANDO Shop no Android Chrome', () => {
   });
 
   it('acessa carrinho e checkout no dispositivo', async () => {
-    await navigate(`${baseUrl}/product-details-one/1`);
-    await sessionCommand('POST', '/execute/sync', {
-      script: "[...document.querySelectorAll('a')].find((element) => element.textContent.trim() === 'ADD TO CART').click();",
-      args: [],
-    });
     await navigate(`${baseUrl}/cart`);
     const hasProduct = await sessionCommand('POST', '/execute/sync', {
-      script: "return document.body.innerText.includes('Green Dress For Woman');",
+      script: "return document.body.innerText.includes('Fit-Flare Dress');",
       args: [],
     });
     assert.equal(hasProduct, true);

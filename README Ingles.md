@@ -1,117 +1,21 @@
-# 🧪 QA Testing Repository
+# Quality Assurance Lab
 
-Welcome! 👋  
-This repository was created to **centralize studies, hands-on practices, and real-world examples in the field of Software Quality Assurance (QA)**, covering manual testing, automation, performance, API testing, and best practices used in a QA’s daily work.
+Software Quality Assurance laboratory and portfolio based on the [QAZANDO Shop](https://automationpratice.com.br/), with automated tests, manual QA documentation, a demonstrational REST API, and CI/CD quality gates.
 
-Here you will find content focused on both **continuous learning** and **practical application in real projects**.
+## Executable projects
 
----
+| Project                                                    | Purpose                                       |
+| ---------------------------------------------------------- | --------------------------------------------- |
+| [`automation/cypress`](automation/cypress)                 | Browser E2E tests                             |
+| [`automation/robot-framework`](automation/robot-framework) | Keyword-driven browser tests                  |
+| [`automation/appium`](automation/appium)                   | Android Chrome mobile web tests               |
+| [`automation/k6`](automation/k6)                           | HTTP smoke and controlled load tests          |
+| [`bdd`](bdd)                                               | Executable Cucumber/Playwright specifications |
+| [`api-tests/rest`](api-tests/rest)                         | Public HTTP contract tests                    |
+| [`api-tests/postman`](api-tests/postman)                   | Postman collection and environment            |
+| [`services/demo-api`](services/demo-api)                   | Local authenticated products REST API         |
+| [`manual-testing`](manual-testing)                         | Test plan, cases, and defect reports          |
 
-## 🚀 What you will find in this repository
+The GitHub Actions workflow runs the suites independently, produces JUnit reports and failure evidence, enforces coverage thresholds, and deploys a consolidated GitHub Pages dashboard. Dependabot monitors npm, pip, and GitHub Actions dependencies.
 
-### 🤖 Test Automation
-- ⚙️ **Cypress** – End-to-End (E2E) automated testing
-- 🚀 **Robot Framework** – Keyword-driven test automation
-- 📈 **K6** – Performance and load testing
-
----
-
-### 🧩 BDD / Gherkin
-- 📝 Writing scenarios using **BDD**
-- 🥒 **Gherkin (Given / When / Then)**
-- 🔗 Integration of BDD scenarios with automation
-
----
-
-### 🌐 API Testing
-- 📬 **Postman**
-- 🔍 Contract validation, status codes, and payload verification
-- 🔐 Authentication and API flow testing
-
----
-
-### 🧑‍💻 Manual Testing & Documentation
-- 📋 Test cases
-- 🗂️ Test plans
-- 🐞 Bug reports and evidences
-- 📑 QA process documentation and best practices
-
----
-
-### 📚 Studies, Roadmap & Learning
-- 🧠 QA study notes
-- 🛣️ Learning roadmap for software testing
-- 📖
----
-qa-testing-repository
-│
-├── automation
-│   ├── cypress
-│   │   ├── cypress.config.js
-│   │   ├── e2e
-│   │   ├── fixtures
-│   │   ├── support
-│   │   └── README.md
-│   │
-│   ├── robot-framework
-│   │   ├── tests
-│   │   ├── resources
-│   │   ├── variables
-│   │   └── README.md
-│   │
-│   └── k6
-│       ├── scripts
-│       ├── reports
-│       └── README.md
-│
-├── bdd
-│   ├── features
-│   │   ├── login.feature
-│   │   ├── signup.feature
-│   │   └── checkout.feature
-│   │
-│   ├── step-definitions
-│   └── README.md
-│
-├── api-tests
-│   ├── postman
-│   │   ├── collections
-│   │   ├── environments
-│   │   └── README.md
-│
-├── manual-testing
-│   ├── test-cases
-│   ├── test-plans
-│   ├── bug-reports
-│   └── README.md
-│
-├── documentation
-│   ├── qa-process.md
-│   ├── test-strategy.md
-│   └── best-practices.md
-│
-├── studies
-│   ├── fundamentals.md
-│   ├── testing-types.md
-│   ├── qa-mindset.md
-│   └── tools-overview.md
-│
-├── roadmap
-│   ├── qa-roadmap.md
-│   ├── automation-roadmap.md
-│   └── performance-roadmap.md
-│
-├── README.md
-└── .gitignore
-
----
-![Status](https://img.shields.io/badge/Status-Active-success)
-![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen)
-![Repo Size](https://img.shields.io/github/repo-size/YOUR_USERNAME/YOUR_REPOSITORY)
-![Last Commit](https://img.shields.io/github/last-commit/YOUR_USERNAME/YOUR_REPOSITORY)
-
----
-![Status](https://img.shields.io/badge/Status-Active-success)
-![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen)
-![Repo Size](https://img.shields.io/github/repo-size/YOUR_USERNAME/YOUR_REPOSITORY)
-![Last Commit](https://img.shields.io/github/last-commit/YOUR_USERNAME/YOUR_REPOSITORY)
+See the [Portuguese README](README.md) for complete setup, architecture, evidence, and execution details.

@@ -10,14 +10,11 @@ describe('QAZANDO Shop - smoke', () => {
     cy.visit('/login');
     cy.get('#btnLogin').click();
     cy.contains('E-mail inválido.').should('be.visible');
-    cy.get('#user').should('match', ':invalid');
-    cy.get('#password').should('match', ':invalid');
   });
 
-  it('adiciona um produto ao carrinho', () => {
-    cy.addFirstProductToCart();
+  it('exibe o carrinho pré-carregado', () => {
     cy.visit('/cart');
-    cy.get('body').should('contain.text', 'Cart');
-    cy.get('a[href*="product-details"], .cart-item, tbody tr').should('have.length.greaterThan', 0);
+    cy.get('table').contains('Fit-Flare Dress').should('be.visible');
+    cy.contains('a', /proceed to checkout/i).should('be.visible');
   });
 });

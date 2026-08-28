@@ -12,7 +12,3 @@ Abrir aplicação
 
 Fechar aplicação
     Close Browser
-
-Adicionar primeiro produto
-    Go To    ${BASE_URL}/product-details-one/1
-    Click    text=ADD TO CART

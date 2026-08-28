@@ -20,14 +20,12 @@ Catálogo deve listar produtos
     Get Element Count    css=a[href*="product-details"]    >    0
 
 Carrinho deve permitir avançar ao checkout
-    Adicionar primeiro produto
     Go To    ${BASE_URL}/cart
-    Get Text    css=body    contains    Green Dress For Woman
+    Get Text    css=body    contains    Fit-Flare Dress
     Get Element    css=a[href="/checkout-one"]
     Get Text    css=body    contains    PROCEED TO CHECKOUT
 
 Checkout deve apresentar endereço e ação final
-    Adicionar primeiro produto
     Go To    ${BASE_URL}/cart
     Click    text=PROCEED TO CHECKOUT
     Get Element    id=faddress

@@ -1,171 +1,67 @@
-# Quality-Assurance-Lab
+# Quality Assurance Lab
 
-# 🧪 Repositórios de Teste QA
+Laboratório e portfólio de Qualidade de Software baseado na [QAZANDO Shop](https://automationpratice.com.br/), com testes automatizados, documentação manual, API demonstrativa e quality gates em CI/CD.
 
-Bem-vindo(a)! 👋  
-Este repositório foi criado com o objetivo de **centralizar estudos, práticas e exemplos reais da área de Qualidade de Software (QA)**, abrangendo testes manuais, automação, performance, APIs e boas práticas utilizadas no dia a dia de um QA.
-
-Aqui você encontrará conteúdos voltados tanto para **aprendizado contínuo** quanto para **aplicação prática em projetos reais**.
-
-## ✅ Laboratórios executáveis
-
-As suítes usam como sistema sob teste a [QAZANDO Shop](https://automationpratice.com.br/) e são independentes:
-
-| Projeto | Finalidade | Execução |
-|---|---|---|
-| [`automation/cypress`](automation/cypress) | E2E e smoke no navegador | `npm ci && npm test` |
-| [`automation/robot-framework`](automation/robot-framework) | UI keyword-driven | `robot --outputdir results tests` |
-| [`automation/k6`](automation/k6) | Smoke e carga HTTP | `k6 run scripts/smoke.js` |
-| [`automation/appium`](automation/appium) | Mobile web Android/Chrome | `npm ci && npm test` |
-| [`bdd`](bdd) | BDD executável com Cucumber | `npm ci && npm test` |
-| [`api-tests/postman`](api-tests/postman) | Contratos das rotas via Postman CLI | `postman collection run ...` |
-| [`api-tests/rest`](api-tests/rest) | Contratos HTTP em código | `npm ci && npm test` |
-| [`services/demo-api`](services/demo-api) | API REST local com autenticação e CRUD | `npm ci && npm test` |
-
-Os resultados consolidados são publicados automaticamente no GitHub Pages após cada execução bem-sucedida da branch `main`.
-| [`manual-testing`](manual-testing) | Plano, casos e template de defeitos | documentação |
-
-A estratégia consolidada está em [`documentation/test-strategy.md`](documentation/test-strategy.md). O CI executa as verificações independentes em paralelo por meio do GitHub Actions.
-
----
-
-## 🚀 O que você vai encontrar neste repositório
-
-### 🤖 Automação de Testes
-- ⚙️ **Cypress** – Testes automatizados End-to-End (E2E)
-- 🚀 **Robot Framework** – Automação baseada em palavras-chave
-- 📈 **K6** – Testes de performance e carga
-
----
-
-### 🧩 BDD / Gherkin
-- 📝 Escrita de cenários em **BDD**
-- 🥒 **Gherkin (Given / When / Then)**
-- 🔗 Integração de cenários com automação
-
----
-
-### 🌐 Testes de API
-- 📬 **Postman**
-- 🔍 Validação de contratos, status code e payloads
-- 🔐 Testes de autenticação e fluxos de API
-
----
-
-### 🧑‍💻 Testes Manuais & Documentação
-- 📋 Casos de teste
-- 🗂️ Planos de teste
-- 🐞 Relatos e evidências de bugs
-- 📑 Documentação de processos e boas práticas de QA
-
----
-
-### 📚 Estudos, Roadmap e Aprendizado
-- 🧠 Anotações de estudo sobre QA
-- 🛣️ Roadmap de aprendizado na área de testes
-- 📖 Conceitos fundamentais de Qualidade de Software
-- 🧪 Estratégias, tipos e níveis de testes
-
----
-
-## 🐞 Qualidade em primeiro lugar
-Este repositório reflete a mentalidade de:
-- 🔍 Atenção aos detalhes
-- 🛠️ Prevenção de defeitos
-- 📊 Melhoria contínua
-- 🤝 Colaboração entre times
-
----
-
-## 📌 Objetivo
-Servir como:
-- 💼 Portfólio de QA
-- 📘 Base de conhecimento
-- 🧪 Laboratório de testes
-- 🚀 Apoio para evolução profissional na área de Qualidade de Software
-
----
-
-📁 Estrutura de Pastas do Repositório (QA)
-qa-testing-repository
-│
-├── 📂 automation
-│   ├── 📂 cypress
-│   │   ├── cypress.config.js
-│   │   ├── 📂 e2e
-│   │   ├── 📂 fixtures
-│   │   ├── 📂 support
-│   │   └── README.md
-│   │
-│   ├── 📂 robot-framework
-│   │   ├── 📂 tests
-│   │   ├── 📂 resources
-│   │   ├── 📂 variables
-│   │   └── README.md
-│   │
-│   └── 📂 k6
-│       ├── 📂 scripts
-│       ├── 📂 reports
-│       └── README.md
-│
-├── 📂 bdd
-│   ├── 📂 features
-│   │   ├── login.feature
-│   │   ├── cadastro.feature
-│   │   └── checkout.feature
-│   │
-│   ├── 📂 step-definitions
-│   └── README.md
-│
-├── 📂 api-tests
-│   ├── 📂 postman
-│   │   ├── collections
-│   │   ├── environments
-│   │   └── README.md
-│
-├── 📂 manual-testing
-│   ├── 📂 test-cases
-│   ├── 📂 test-plans
-│   ├── 📂 bug-reports
-│   └── README.md
-│
-├── 📂 documentation
-│   ├── qa-process.md
-│   ├── test-strategy.md
-│   └── best-practices.md
-│
-├── 📂 studies
-│   ├── fundamentals.md
-│   ├── testing-types.md
-│   ├── qa-mindset.md
-│   └── tools-overview.md
-│
-├── 📂 roadmap
-│   ├── qa-roadmap.md
-│   ├── automation-roadmap.md
-│   └── performance-roadmap.md
-│
-├── 📄 README.md
-└── 📄 .gitignore
-
----
-
+[![Quality Gates](https://github.com/ThiagoPhelip/Quality-Assurance-Lab/actions/workflows/ci.yml/badge.svg)](https://github.com/ThiagoPhelip/Quality-Assurance-Lab/actions/workflows/ci.yml)
 ![QA](https://img.shields.io/badge/Quality%20Assurance-QA-blue)
-![Tests](https://img.shields.io/badge/Software%20Testing-Automated%20%7C%20Manual-green)
-![Cypress](https://img.shields.io/badge/Cypress-E2E-brightgreen)
-![Robot](https://img.shields.io/badge/Robot%20Framework-Automation-yellow)
-![K6](https://img.shields.io/badge/K6-Performance-orange)
-![BDD](https://img.shields.io/badge/BDD-Gherkin-purple)
-![Postman](https://img.shields.io/badge/Postman-API-orange)
-![Bug](https://img.shields.io/badge/Bug%20Hunting-Enabled-red)
-![Learning](https://img.shields.io/badge/Continuous-Learning-blueviolet)
+![Node](https://img.shields.io/badge/Node.js-22-green)
+![Python](https://img.shields.io/badge/Python-3.13-blue)
 
----
+## Laboratórios executáveis
 
-🧠
-![Status](https://img.shields.io/badge/Status-Active-success)
-![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen)
-![GitHub Repo Size](https://img.shields.io/github/repo-size/ThiagoPhelip/Quality-Assurance-Lab)
-![Last Commit](https://img.shields.io/github/last-commit/ThiagoPhelip/Quality-Assurance-Lab)
+| Projeto                                                    | Cobertura                                            | Execução                          |
+| ---------------------------------------------------------- | ---------------------------------------------------- | --------------------------------- |
+| [`automation/cypress`](automation/cypress)                 | E2E web: autenticação, catálogo, carrinho e checkout | `npm ci && npm test`              |
+| [`automation/robot-framework`](automation/robot-framework) | UI keyword-driven                                    | `robot --outputdir results tests` |
+| [`automation/appium`](automation/appium)                   | Mobile web Android/Chrome                            | `npm ci && npm test`              |
+| [`automation/k6`](automation/k6)                           | Smoke e carga HTTP                                   | `k6 run scripts/smoke.js`         |
+| [`bdd`](bdd)                                               | BDD executável com Cucumber e Playwright             | `npm ci && npm test`              |
+| [`api-tests/rest`](api-tests/rest)                         | Contratos HTTP da aplicação pública                  | `npm ci && npm test`              |
+| [`api-tests/postman`](api-tests/postman)                   | Coleção Postman executada pelo CLI oficial           | `postman collection run ...`      |
+| [`services/demo-api`](services/demo-api)                   | API REST local: Bearer, CRUD e contratos de erro     | `npm ci && npm test`              |
+| [`manual-testing`](manual-testing)                         | Plano, casos e relatórios de defeito                 | documentação                      |
 
-✨ Sinta-se à vontade para explorar, estudar e evoluir!
+## Qualidade e CI/CD
+
+O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) executa os projetos de forma isolada e paralela, gera relatórios JUnit, preserva evidências de falha e publica um dashboard no GitHub Pages. O pipeline inclui:
+
+- quality check de JSON, placeholders e whitespace;
+- Cypress em Chrome e BDD em Chromium;
+- Robot Framework em Python 3.13;
+- Appium 3 com emulador Android e UiAutomator2;
+- Postman CLI, contratos HTTP e k6;
+- API demonstrativa com limiares mínimos de cobertura;
+- Dependabot para npm, pip e GitHub Actions.
+
+Testes de carga sustentada não são disparados automaticamente contra o site público. Somente o smoke de baixo impacto participa do CI.
+
+## API demonstrativa
+
+[`services/demo-api`](services/demo-api) existe para demonstrar testes de API reais, já que a QAZANDO Shop não expõe uma API REST pública documentada. O serviço local oferece:
+
+- autenticação Bearer com sessão temporária;
+- listagem e CRUD de produtos;
+- respostas `400`, `401`, `404`, `405`, `413`, `415` e `422`;
+- proteção de payload e cabeçalhos HTTP;
+- especificação [`openapi.yaml`](services/demo-api/openapi.yaml);
+- testes nativos do Node com cobertura mínima obrigatória.
+
+## Evidências e documentação
+
+- [Estratégia de testes](documentation/test-strategy.md)
+- [Plano de testes](manual-testing/test-plans/test-plan.md)
+- [Casos prioritários](manual-testing/test-cases/core-flows.md)
+- [BUG-001 — produto não é adicionado ao carrinho](manual-testing/bug-reports/BUG-001-add-to-cart.md)
+- [Template de defeito](manual-testing/bug-reports/template.md)
+- [Conceitos de testes](Conceito_de_Teste_de_Software/conceito.md)
+- [BDD e Gherkin](Sobre%20o%20BDD_GHERKIN/Gherkin.md)
+
+## Configuração
+
+Cada projeto possui seu próprio README e arquivo de dependências. A URL da aplicação pode ser substituída por `BASE_URL`. Nenhum segredo ou dado pessoal deve ser versionado.
+
+Para reproduzir o conjunto principal localmente, use Node.js 22 e Python 3.13. Appium também requer Android SDK, JDK e dispositivo ou emulador disponível no `adb`.
+
+## Resultado esperado
+
+Pull requests e pushes para `main` devem passar por todos os quality gates. Relatórios e screenshots são armazenados como artifacts por tempo limitado; o resumo da execução da branch principal é publicado automaticamente no GitHub Pages.
