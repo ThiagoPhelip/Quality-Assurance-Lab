@@ -8,7 +8,7 @@ describe('QAZANDO Shop - smoke', () => {
 
   it('abre login e valida envio vazio', () => {
     cy.visit('/login');
-    cy.get('#btnLogin, button[type="submit"]').first().click();
+    cy.get('#btnLogin').click();
     cy.contains('E-mail inválido.').should('be.visible');
     cy.get('#user').should('match', ':invalid');
     cy.get('#password').should('match', ':invalid');

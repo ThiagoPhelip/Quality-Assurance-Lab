@@ -4,11 +4,9 @@ const baseUrl = process.env.BASE_URL || 'https://automationpratice.com.br';
 
 Given('que acesso o catálogo', async function () { await this.page.goto(`${baseUrl}/shop`, { waitUntil: 'networkidle' }); });
 When('adiciono o primeiro produto e abro o carrinho', async function () {
-  await this.page.goto(`${baseUrl}/cart`, { waitUntil: 'networkidle' });
-  await this.page.getByRole('button', { name: /clear cart/i }).click();
-  await this.page.goto(`${baseUrl}/shop`, { waitUntil: 'networkidle' });
-  await this.page.locator('.add-to-cart').first().click();
-  await this.page.goto(`${baseUrl}/cart`, { waitUntil: 'networkidle' });
+  await this.page.goto(`${baseUrl}/product-details-one/1`, { waitUntil: 'domcontentloaded' });
+  await this.page.getByRole('link', { name: /^add to cart$/i }).click();
+  await this.page.goto(`${baseUrl}/cart`, { waitUntil: 'domcontentloaded' });
 });
 Then('devo visualizar o produto e a opção de avançar ao checkout', async function () {
   await this.page.getByText('Green Dress For Woman', { exact: true }).waitFor();
