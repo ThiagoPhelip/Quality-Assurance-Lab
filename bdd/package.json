@@ -8,7 +8,7 @@
     "test:ci": "cucumber-js --format progress --format junit:reports/cucumber.xml"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^12.2.0",
+    "@cucumber/cucumber": "^13.2.1",
     "playwright": "^1.55.0"
   }
 }
