@@ -168,7 +168,7 @@ jobs:
             cache: npm,
             cache-dependency-path: automation/appium/package-lock.json,
           }
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with: { distribution: temurin, java-version: "17" }
       - run: npm ci
       - run: npx appium driver install uiautomator2@8.5.0
