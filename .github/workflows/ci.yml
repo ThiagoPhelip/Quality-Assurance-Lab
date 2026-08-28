@@ -40,7 +40,7 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: demo-api-report,
@@ -65,7 +65,7 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
       - if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: cypress-evidence,
@@ -74,7 +74,7 @@ jobs:
             retention-days: 7,
           }
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: cypress-report,
@@ -100,7 +100,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:ci
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: bdd-report,
@@ -121,7 +121,7 @@ jobs:
           working-directory: api-tests/postman
           command: collection run QAZANDO-Shop.postman_collection.json --environment local.postman_environment.json --reporters cli,junit --reporter-junit-export reports/postman.xml
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: postman-report,
@@ -146,7 +146,7 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: api-contract-report,
@@ -204,7 +204,7 @@ jobs:
           disable-animations: true
           script: cd automation/appium && npm run test:ci
       - if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: appium-log
           path: |
@@ -213,7 +213,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: appium-report,
@@ -239,7 +239,7 @@ jobs:
       - run: rfbrowser init
       - run: robot --outputdir results tests
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: robot-results,
@@ -263,7 +263,7 @@ jobs:
           flags: --summary-export=automation/k6/reports/summary.json
           disable-analytics: true
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: k6-report,
