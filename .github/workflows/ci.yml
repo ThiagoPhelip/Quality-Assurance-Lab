@@ -47,6 +47,41 @@ jobs:
           working-directory: api-tests/postman
           command: collection run QAZANDO-Shop.postman_collection.json --environment local.postman_environment.json
 
+  api-contract:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: api-tests/rest } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: api-tests/rest/package-lock.json }
+      - run: npm ci
+      - run: npm test
+
+  appium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults: { run: { working-directory: automation/appium } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: automation/appium/package-lock.json }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '17' }
+      - run: npm ci
+      - run: npx appium driver install uiautomator2@8.5.0
+      - run: npx appium --base-path / --log appium.log &
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: cd automation/appium && npm test
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with: { name: appium-log, path: automation/appium/appium.log, if-no-files-found: ignore, retention-days: 7 }
+
   robot:
     runs-on: ubuntu-latest
     defaults: { run: { working-directory: automation/robot-framework } }

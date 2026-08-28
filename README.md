@@ -16,8 +16,10 @@ As suítes usam como sistema sob teste a [QAZANDO Shop](https://automationpratic
 | [`automation/cypress`](automation/cypress) | E2E e smoke no navegador | `npm ci && npm test` |
 | [`automation/robot-framework`](automation/robot-framework) | UI keyword-driven | `robot --outputdir results tests` |
 | [`automation/k6`](automation/k6) | Smoke e carga HTTP | `k6 run scripts/smoke.js` |
+| [`automation/appium`](automation/appium) | Mobile web Android/Chrome | `npm ci && npm test` |
 | [`bdd`](bdd) | BDD executável com Cucumber | `npm ci && npm test` |
 | [`api-tests/postman`](api-tests/postman) | Contratos das rotas via Postman CLI | `postman collection run ...` |
+| [`api-tests/rest`](api-tests/rest) | Contratos HTTP em código | `npm ci && npm test` |
 | [`manual-testing`](manual-testing) | Plano, casos e template de defeitos | documentação |
 
 A estratégia consolidada está em [`documentation/test-strategy.md`](documentation/test-strategy.md). O CI executa as verificações independentes em paralelo por meio do GitHub Actions.

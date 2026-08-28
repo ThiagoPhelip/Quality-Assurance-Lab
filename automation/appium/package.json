@@ -1,0 +1,14 @@
+{
+  "name": "qa-lab-appium",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testes mobile web Android da QAZANDO Shop com Appium",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "appium": "appium --base-path /",
+    "driver:install": "appium driver install uiautomator2@8.5.0",
+    "doctor": "appium driver doctor uiautomator2",
+    "test": "node --test --test-concurrency=1"
+  },
+  "devDependencies": { "appium": "3.7.0" }
+}

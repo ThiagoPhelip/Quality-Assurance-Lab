@@ -1,6 +1,6 @@
 # Estratégia de qualidade
 
-A pirâmide deste laboratório separa responsabilidades: Postman CLI e k6 validam disponibilidade HTTP; Cypress e Robot cobrem smoke de interface; Cucumber mantém exemplos de negócio executáveis; testes manuais cobrem exploração, UX e acessibilidade.
+A pirâmide deste laboratório separa responsabilidades: Node Test Runner, Postman CLI e k6 validam contratos e disponibilidade HTTP; Cypress e Robot cobrem interface desktop; Appium cobre mobile web Android; Cucumber mantém exemplos de negócio executáveis; testes manuais cobrem exploração, UX e acessibilidade.
 
 ## Regras de engenharia
 
@@ -16,8 +16,10 @@ A pirâmide deste laboratório separa responsabilidades: Postman CLI e k6 valida
 | Camada | Ferramenta | Pull request | Manual |
 |---|---|---:|---:|
 | Rotas HTTP | Postman CLI | Sim | Sim |
+| Contratos HTTP | Node Test Runner | Sim | Sim |
 | UI smoke | Cypress | Sim | Sim |
 | UI keyword-driven | Robot | Sim | Sim |
+| Mobile web | Appium | Sim | Sim |
 | Comportamento | Cucumber | Sim | Sim |
 | Performance smoke | k6 | Sim | Sim |
 | Carga | k6 | Não | Sim |

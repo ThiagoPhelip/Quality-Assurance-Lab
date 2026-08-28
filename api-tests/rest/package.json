@@ -1,0 +1,11 @@
+{
+  "name": "qa-lab-api-contract",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testes dos contratos HTTP públicos da QAZANDO Shop",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test",
+    "test:watch": "node --test --watch"
+  }
+}
