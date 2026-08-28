@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - run: node scripts/quality-check.js
@@ -29,7 +29,7 @@ jobs:
     timeout-minutes: 10
     defaults: { run: { working-directory: services/demo-api } }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           {
@@ -54,7 +54,7 @@ jobs:
     timeout-minutes: 20
     defaults: { run: { working-directory: automation/cypress } }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           {
@@ -88,7 +88,7 @@ jobs:
     timeout-minutes: 20
     defaults: { run: { working-directory: bdd } }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           {
@@ -113,7 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: mkdir -p api-tests/postman/reports
       - uses: postmanlabs/postman-cli-action@v1
         with:
@@ -135,7 +135,7 @@ jobs:
     timeout-minutes: 10
     defaults: { run: { working-directory: api-tests/rest } }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           {
@@ -160,7 +160,7 @@ jobs:
     timeout-minutes: 30
     defaults: { run: { working-directory: automation/appium } }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           {
@@ -227,7 +227,7 @@ jobs:
     timeout-minutes: 20
     defaults: { run: { working-directory: automation/robot-framework } }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with:
           {
@@ -252,7 +252,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: mkdir -p automation/k6/reports
       - uses: grafana/setup-k6-action@v1
         with:
@@ -291,7 +291,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - name: Generate consolidated dashboard
