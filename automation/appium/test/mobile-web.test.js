@@ -79,4 +79,11 @@ describe('QAZANDO Shop no Android Chrome', () => {
 
     assert.ok(metrics.content <= metrics.viewport + 2, `overflow horizontal: ${metrics.content}px > ${metrics.viewport}px`);
   });
+
+  it('acessa carrinho e checkout no dispositivo', async () => {
+    await navigate(`${baseUrl}/cart`);
+    assert.ok(await find('a[href="/checkout-one"]'));
+    await navigate(`${baseUrl}/checkout-one`);
+    assert.ok(await find('#faddress'));
+  });
 });

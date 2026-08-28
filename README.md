@@ -20,6 +20,9 @@ As suítes usam como sistema sob teste a [QAZANDO Shop](https://automationpratic
 | [`bdd`](bdd) | BDD executável com Cucumber | `npm ci && npm test` |
 | [`api-tests/postman`](api-tests/postman) | Contratos das rotas via Postman CLI | `postman collection run ...` |
 | [`api-tests/rest`](api-tests/rest) | Contratos HTTP em código | `npm ci && npm test` |
+| [`services/demo-api`](services/demo-api) | API REST local com autenticação e CRUD | `npm ci && npm test` |
+
+Os resultados consolidados são publicados automaticamente no GitHub Pages após cada execução bem-sucedida da branch `main`.
 | [`manual-testing`](manual-testing) | Plano, casos e template de defeitos | documentação |
 
 A estratégia consolidada está em [`documentation/test-strategy.md`](documentation/test-strategy.md). O CI executa as verificações independentes em paralelo por meio do GitHub Actions.
