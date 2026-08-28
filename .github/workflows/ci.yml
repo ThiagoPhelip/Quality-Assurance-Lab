@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: 22 }
       - run: node scripts/quality-check.js
       - run: git diff --check
@@ -30,7 +30,7 @@ jobs:
     defaults: { run: { working-directory: services/demo-api } }
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           {
             node-version: 22,
@@ -55,7 +55,7 @@ jobs:
     defaults: { run: { working-directory: automation/cypress } }
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           {
             node-version: 22,
@@ -89,7 +89,7 @@ jobs:
     defaults: { run: { working-directory: bdd } }
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           {
             node-version: 22,
@@ -136,7 +136,7 @@ jobs:
     defaults: { run: { working-directory: api-tests/rest } }
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           {
             node-version: 22,
@@ -161,7 +161,7 @@ jobs:
     defaults: { run: { working-directory: automation/appium } }
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           {
             node-version: 22,
@@ -292,7 +292,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: 22 }
       - name: Generate consolidated dashboard
         env:
