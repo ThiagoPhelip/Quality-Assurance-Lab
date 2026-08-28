@@ -9,7 +9,8 @@ describe('Autenticação', () => {
 
   it('valida campos obrigatórios do cadastro', () => {
     cy.visit('/register');
-    cy.get('#btnRegister, button[type="submit"]').first().click();
-    cy.url().should('include', '/register');
+    cy.get('#btnRegister').click();
+    cy.contains('O campo nome deve ser prenchido').should('be.visible');
+    cy.get('input:invalid').its('length').should('be.gte', 2);
   });
 });

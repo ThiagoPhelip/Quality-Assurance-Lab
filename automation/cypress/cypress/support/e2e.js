@@ -1,7 +1,7 @@
-Cypress.on('uncaught:exception', () => false);
-
 Cypress.Commands.add('addFirstProductToCart', () => {
+  cy.visit('/cart');
+  cy.contains('button', /clear cart/i).click();
   cy.visit('/shop');
-  cy.get('a[href*="product-details"]').first().click();
-  cy.contains(/add to cart/i).click();
+  cy.contains('a', 'Green Dress For Woman').should('be.visible');
+  cy.get('.add-to-cart').first().click();
 });

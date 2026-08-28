@@ -24,6 +24,6 @@ When('informo credenciais sintéticas', async function () {
   await this.page.locator('#btnLogin').click();
 });
 Then('devo acessar minha conta', async function () {
-  await this.page.waitForTimeout(500);
+  await this.page.waitForURL('**/my-account');
   assert.match(this.page.url(), /\/my-account/);
 });

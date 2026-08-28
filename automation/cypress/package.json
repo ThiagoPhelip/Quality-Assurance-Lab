@@ -5,9 +5,16 @@
   "scripts": {
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "test": "cypress run --browser chrome"
+    "test": "cypress run --browser chrome",
+    "pretest:ci": "node -e \"require('fs').mkdirSync('reports',{recursive:true})\"",
+    "test:ci": "cypress run --browser chrome --reporter mocha-junit-reporter --reporter-options mochaFile=reports/junit-[hash].xml,toConsole=true"
   },
   "devDependencies": {
-    "cypress": "^15.1.0"
+    "cypress": "^15.1.0",
+    "mocha-junit-reporter": "^2.2.1"
+  },
+  "overrides": {
+    "diff": "9.0.0",
+    "serialize-javascript": "7.1.0"
   }
 }

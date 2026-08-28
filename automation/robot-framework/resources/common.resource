@@ -2,7 +2,7 @@
 Library    Browser
 
 *** Variables ***
-${BASE_URL}    https://automationpratice.com.br
+${BASE_URL}    %{BASE_URL=https://automationpratice.com.br}
 
 *** Keywords ***
 Abrir aplicação
@@ -12,3 +12,9 @@ Abrir aplicação
 
 Fechar aplicação
     Close Browser
+
+Adicionar primeiro produto
+    Go To    ${BASE_URL}/cart
+    Click    text=CLEAR CART
+    Go To    ${BASE_URL}/shop
+    Click    css=.add-to-cart >> nth=0

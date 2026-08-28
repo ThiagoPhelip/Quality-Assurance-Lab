@@ -7,8 +7,8 @@ Funcionalidade: Carrinho e checkout
   @smoke
   Cenário: Acessar o carrinho
     Dado que acesso o catálogo
-    Quando abro o carrinho
-    Então devo visualizar a opção de avançar ao checkout
+    Quando adiciono o primeiro produto e abro o carrinho
+    Então devo visualizar o produto e a opção de avançar ao checkout
 
   Cenário: Consultar os campos essenciais do checkout
     Dado que acesso o checkout

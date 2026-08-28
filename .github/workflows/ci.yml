@@ -14,48 +14,146 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node scripts/quality-check.js
+      - run: git diff --check
+
+  demo-api:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults: { run: { working-directory: services/demo-api } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          {
+            node-version: 22,
+            cache: npm,
+            cache-dependency-path: services/demo-api/package-lock.json,
+          }
+      - run: npm ci
+      - run: npm run test:ci
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          {
+            name: demo-api-report,
+            path: services/demo-api/reports,
+            if-no-files-found: error,
+            retention-days: 14,
+          }
+
   cypress:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     defaults: { run: { working-directory: automation/cypress } }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm, cache-dependency-path: automation/cypress/package-lock.json }
+        with:
+          {
+            node-version: 22,
+            cache: npm,
+            cache-dependency-path: automation/cypress/package-lock.json,
+          }
       - run: npm ci
-      - run: npm test
+      - run: npm run test:ci
       - if: failure()
         uses: actions/upload-artifact@v4
-        with: { name: cypress-evidence, path: automation/cypress/cypress/screenshots, if-no-files-found: ignore, retention-days: 7 }
+        with:
+          {
+            name: cypress-evidence,
+            path: automation/cypress/cypress/screenshots,
+            if-no-files-found: ignore,
+            retention-days: 7,
+          }
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          {
+            name: cypress-report,
+            path: automation/cypress/reports,
+            if-no-files-found: error,
+            retention-days: 14,
+          }
 
   bdd:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     defaults: { run: { working-directory: bdd } }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm, cache-dependency-path: bdd/package-lock.json }
+        with:
+          {
+            node-version: 22,
+            cache: npm,
+            cache-dependency-path: bdd/package-lock.json,
+          }
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: npm test
+      - run: npm run test:ci
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          {
+            name: bdd-report,
+            path: bdd/reports,
+            if-no-files-found: error,
+            retention-days: 14,
+          }
 
   postman:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - run: mkdir -p api-tests/postman/reports
       - uses: postmanlabs/postman-cli-action@v1
         with:
+          postman-cli-version: "1.27.0"
           working-directory: api-tests/postman
-          command: collection run QAZANDO-Shop.postman_collection.json --environment local.postman_environment.json
+          command: collection run QAZANDO-Shop.postman_collection.json --environment local.postman_environment.json --reporters cli,junit --reporter-junit-export reports/postman.xml
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          {
+            name: postman-report,
+            path: api-tests/postman/reports,
+            if-no-files-found: error,
+            retention-days: 14,
+          }
 
   api-contract:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: api-tests/rest } }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm, cache-dependency-path: api-tests/rest/package-lock.json }
+        with:
+          {
+            node-version: 22,
+            cache: npm,
+            cache-dependency-path: api-tests/rest/package-lock.json,
+          }
       - run: npm ci
-      - run: npm test
+      - run: npm run test:ci
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          {
+            name: api-contract-report,
+            path: api-tests/rest/reports,
+            if-no-files-found: error,
+            retention-days: 14,
+          }
 
   appium:
     runs-on: ubuntu-latest
@@ -64,42 +162,169 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm, cache-dependency-path: automation/appium/package-lock.json }
+        with:
+          {
+            node-version: 22,
+            cache: npm,
+            cache-dependency-path: automation/appium/package-lock.json,
+          }
       - uses: actions/setup-java@v4
-        with: { distribution: temurin, java-version: '17' }
+        with: { distribution: temurin, java-version: "17" }
       - run: npm ci
       - run: npx appium driver install uiautomator2@8.5.0
-      - run: npx appium --base-path / --log appium.log &
+      - name: Enable KVM
+        shell: bash
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' |
+            sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Start Appium and wait until ready
+        shell: bash
+        run: |
+          npx appium \
+            --base-path / \
+            --allow-insecure uiautomator2:chromedriver_autodownload \
+            --log appium.log \
+            > appium-console.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:4723/status; then
+              exit 0
+            fi
+            sleep 2
+          done
+          tail -n 100 appium-console.log
+          exit 1
       - uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 35
+          api-level: 34
           target: google_apis
           arch: x86_64
           profile: pixel_6
           disable-animations: true
-          script: cd automation/appium && npm test
+          script: cd automation/appium && npm run test:ci
       - if: failure()
         uses: actions/upload-artifact@v4
-        with: { name: appium-log, path: automation/appium/appium.log, if-no-files-found: ignore, retention-days: 7 }
+        with:
+          {
+            name: appium-log,
+            path: |
+              automation/appium/appium.log
+              automation/appium/appium-console.log
+            if-no-files-found: ignore,
+            retention-days: 7,
+          }
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          {
+            name: appium-report,
+            path: automation/appium/reports,
+            if-no-files-found: error,
+            retention-days: 14,
+          }
 
   robot:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     defaults: { run: { working-directory: automation/robot-framework } }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: { python-version: '3.13', cache: pip, cache-dependency-path: automation/robot-framework/requirements.txt }
+        with:
+          {
+            python-version: "3.13",
+            cache: pip,
+            cache-dependency-path: automation/robot-framework/requirements.txt,
+          }
       - run: pip install -r requirements.txt
       - run: rfbrowser init
       - run: robot --outputdir results tests
       - if: always()
         uses: actions/upload-artifact@v4
-        with: { name: robot-results, path: automation/robot-framework/results, if-no-files-found: ignore, retention-days: 7 }
+        with:
+          {
+            name: robot-results,
+            path: automation/robot-framework/results,
+            if-no-files-found: ignore,
+            retention-days: 7,
+          }
 
   performance-smoke:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+      - run: mkdir -p automation/k6/reports
       - uses: grafana/setup-k6-action@v1
+        with:
+          k6-version: "2.1.0"
       - uses: grafana/run-k6-action@v1
-        with: { path: automation/k6/scripts/smoke.js }
+        with:
+          path: automation/k6/scripts/smoke.js
+          flags: --summary-export=automation/k6/reports/summary.json
+          disable-analytics: true
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          {
+            name: k6-report,
+            path: automation/k6/reports,
+            if-no-files-found: error,
+            retention-days: 14,
+          }
+
+  build-report:
+    if: ${{ !cancelled() && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+    needs:
+      [
+        quality,
+        demo-api,
+        api-contract,
+        postman,
+        cypress,
+        bdd,
+        robot,
+        performance-smoke,
+        appium,
+      ]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Generate consolidated dashboard
+        env:
+          STATUS_QUALITY: ${{ needs.quality.result }}
+          STATUS_DEMO_API: ${{ needs['demo-api'].result }}
+          STATUS_API_CONTRACT: ${{ needs['api-contract'].result }}
+          STATUS_POSTMAN: ${{ needs.postman.result }}
+          STATUS_CYPRESS: ${{ needs.cypress.result }}
+          STATUS_BDD: ${{ needs.bdd.result }}
+          STATUS_ROBOT: ${{ needs.robot.result }}
+          STATUS_PERFORMANCE_SMOKE: ${{ needs['performance-smoke'].result }}
+          STATUS_APPIUM: ${{ needs.appium.result }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: node scripts/generate-dashboard.js public
+      - uses: actions/upload-pages-artifact@v4
+        with: { path: public }
+
+  deploy-pages:
+    needs: build-report
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - id: deployment
+        uses: actions/deploy-pages@v4

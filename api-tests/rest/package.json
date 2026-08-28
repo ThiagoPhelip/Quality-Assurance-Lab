@@ -6,6 +6,8 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "test": "node --test",
-    "test:watch": "node --test --watch"
+    "test:watch": "node --test --watch",
+    "pretest:ci": "node -e \"require('fs').mkdirSync('reports',{recursive:true})\"",
+    "test:ci": "node --test --test-reporter=junit --test-reporter-destination=reports/junit.xml"
   }
 }

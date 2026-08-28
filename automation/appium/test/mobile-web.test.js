@@ -14,7 +14,9 @@ async function command(method, path, body) {
   });
   const payload = await response.json();
   if (!response.ok || payload.value?.error) {
-    throw new Error(payload.value?.message || `WebDriver retornou HTTP ${response.status}`);
+    const error = new Error(payload.value?.message || `WebDriver retornou HTTP ${response.status}`);
+    error.webdriverError = payload.value?.error;
+    throw error;
   }
   return payload.value;
 }
@@ -29,11 +31,24 @@ async function find(css) {
       const element = await sessionCommand('POST', '/element', { using: 'css selector', value: css });
       return element['element-6066-11e4-a52e-4f735466cecf'];
     } catch (error) {
+      if (error.webdriverError !== 'no such element') throw error;
       if (Date.now() >= deadline) throw error;
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
   }
   throw new Error(`elemento não encontrado: ${css}`);
+}
+
+const click = (element) => sessionCommand('POST', `/element/${element}/click`, {});
+
+async function waitForUrl(pattern) {
+  const deadline = Date.now() + 15_000;
+  while (Date.now() < deadline) {
+    const current = await sessionCommand('GET', '/url');
+    if (pattern.test(current)) return current;
+    await new Promise((resolve) => setTimeout(resolve, 300));
+  }
+  throw new Error(`URL não atingiu o padrão ${pattern}`);
 }
 
 describe('QAZANDO Shop no Android Chrome', () => {
@@ -56,7 +71,7 @@ describe('QAZANDO Shop no Android Chrome', () => {
   it('abre a home em viewport mobile', async () => {
     await navigate(baseUrl);
     assert.match(await sessionCommand('GET', '/title'), /QAZANDO Shop E-Commerce/);
-    assert.match(await sessionCommand('GET', '/url'), /automationpratice\.com\.br/);
+    assert.equal(new URL(await sessionCommand('GET', '/url')).host, new URL(baseUrl).host);
   });
 
   it('exibe e preenche o formulário de login', async () => {
@@ -67,7 +82,9 @@ describe('QAZANDO Shop no Android Chrome', () => {
 
     await sessionCommand('POST', `/element/${user}/value`, { text: 'qa.mobile@example.com' });
     await sessionCommand('POST', `/element/${password}/value`, { text: 'SenhaMobile123!' });
-    assert.equal(await sessionCommand('GET', `/element/${submit}/displayed`), true);
+    assert.equal(await sessionCommand('GET', `/element/${user}/property/value`), 'qa.mobile@example.com');
+    await click(submit);
+    assert.match(await waitForUrl(/\/my-account/), /\/my-account/);
   });
 
   it('mantém o conteúdo dentro da largura visual', async () => {
@@ -81,7 +98,14 @@ describe('QAZANDO Shop no Android Chrome', () => {
   });
 
   it('acessa carrinho e checkout no dispositivo', async () => {
+    await navigate(`${baseUrl}/shop`);
+    await click(await find('.add-to-cart'));
     await navigate(`${baseUrl}/cart`);
+    const hasProduct = await sessionCommand('POST', '/execute/sync', {
+      script: "return document.body.innerText.includes('Green Dress For Woman');",
+      args: [],
+    });
+    assert.equal(hasProduct, true);
     assert.ok(await find('a[href="/checkout-one"]'));
     await navigate(`${baseUrl}/checkout-one`);
     assert.ok(await find('#faddress'));

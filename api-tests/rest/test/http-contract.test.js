@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const baseUrl = (process.env.BASE_URL || 'https://automationpratice.com.br').replace(/\/$/, '');
 
 async function get(path, accept = '*/*') {
-  return fetch(`${baseUrl}${path}`, {
+  return fetch(new URL(path, `${baseUrl}/`), {
     headers: { accept, 'user-agent': 'Quality-Assurance-Lab/1.0' },
     redirect: 'follow',
     signal: AbortSignal.timeout(15_000),
@@ -23,7 +23,7 @@ describe('Contrato HTTP da QAZANDO Shop', () => {
   });
 
   for (const path of ['/shop', '/login', '/register', '/cart', '/checkout-one']) {
-    it(`mantém a rota SPA ${path} disponível`, async () => {
+    it(`entrega o shell SPA ao acessar ${path}`, async () => {
       const response = await get(path, 'text/html');
       const body = await response.text();
 
@@ -35,10 +35,10 @@ describe('Contrato HTTP da QAZANDO Shop', () => {
 
   it('publica um manifesto web válido', async () => {
     const response = await get('/manifest.json', 'application/json');
-    const manifest = await response.json();
-
+    const body = await response.text();
     assert.equal(response.status, 200);
     assert.match(response.headers.get('content-type') || '', /json/i);
+    const manifest = JSON.parse(body);
     assert.equal(typeof manifest.name, 'string');
     assert.ok(manifest.name.length > 0);
     assert.ok(Array.isArray(manifest.icons));
@@ -47,7 +47,7 @@ describe('Contrato HTTP da QAZANDO Shop', () => {
   it('referencia bundles JavaScript acessíveis', async () => {
     const documentResponse = await get('/', 'text/html');
     const html = await documentResponse.text();
-    const scripts = [...html.matchAll(/<script[^>]+src="([^"]+\.js)"/g)].map((match) => match[1]);
+    const scripts = [...html.matchAll(/<script[^>]+src=["']([^"']+\.js(?:[?#][^"']*)?)["']/gi)].map((match) => match[1]);
 
     assert.ok(scripts.length > 0, 'nenhum bundle JavaScript foi encontrado');
     const responses = await Promise.all(scripts.map((src) => get(src)));

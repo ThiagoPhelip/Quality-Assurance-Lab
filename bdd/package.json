@@ -2,7 +2,11 @@
   "name": "qa-lab-bdd",
   "private": true,
   "version": "1.0.0",
-  "scripts": { "test": "cucumber-js" },
+  "scripts": {
+    "test": "cucumber-js",
+    "pretest:ci": "node -e \"require('fs').mkdirSync('reports',{recursive:true})\"",
+    "test:ci": "cucumber-js --format progress --format junit:reports/cucumber.xml"
+  },
   "devDependencies": {
     "@cucumber/cucumber": "^12.2.0",
     "playwright": "^1.55.0"

@@ -8,7 +8,9 @@
     "appium": "appium --base-path /",
     "driver:install": "appium driver install uiautomator2@8.5.0",
     "doctor": "appium driver doctor uiautomator2",
-    "test": "node --test --test-concurrency=1"
+    "test": "node --test --test-concurrency=1",
+    "pretest:ci": "node -e \"require('fs').mkdirSync('reports',{recursive:true})\"",
+    "test:ci": "node --test --test-concurrency=1 --test-reporter=junit --test-reporter-destination=reports/junit.xml"
   },
   "devDependencies": { "appium": "3.7.0" }
 }

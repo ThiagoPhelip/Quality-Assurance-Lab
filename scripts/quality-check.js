@@ -20,8 +20,8 @@ for (const file of files) {
   }
   if (/\.(md|js|json|ya?ml)$/.test(file)) {
     const text = fs.readFileSync(file, 'utf8');
-    if (/SEU_USUARIO|SEU_REPOSITORIO/.test(text)) errors.push(`${relative}: placeholder não substituído`);
-    if (/[^\r\n\t ]+[ \t]+\r?$/m.test(text)) errors.push(`${relative}: espaço no fim da linha`);
+    if (relative !== path.join('scripts', 'quality-check.js') && /SEU_USUARIO|SEU_REPOSITORIO/.test(text)) errors.push(`${relative}: placeholder não substituído`);
+    if (/\.(js|json|ya?ml)$/.test(file) && /[^\r\n\t ]+[ \t]+\r?$/m.test(text)) errors.push(`${relative}: espaço no fim da linha`);
   }
 }
 if (errors.length) { console.error(errors.join('\n')); process.exit(1); }

@@ -9,6 +9,15 @@ updates:
   - package-ecosystem: npm
     directory: /bdd
     schedule: { interval: weekly }
+  - package-ecosystem: npm
+    directory: /api-tests/rest
+    schedule: { interval: weekly }
+  - package-ecosystem: npm
+    directory: /services/demo-api
+    schedule: { interval: weekly }
+  - package-ecosystem: pip
+    directory: /automation/robot-framework
+    schedule: { interval: weekly }
   - package-ecosystem: github-actions
     directory: /
     schedule: { interval: weekly }

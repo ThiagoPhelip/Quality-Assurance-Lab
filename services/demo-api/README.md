@@ -9,4 +9,4 @@ npm run test:coverage
 npm start
 ```
 
-Credenciais de laboratório: `qa@example.com` / `Quality123!`. Não use estas credenciais fora deste serviço local.
+Credenciais de laboratório: `qa@example.com` / `Quality123!`. O login gera um token Bearer aleatório válido apenas enquanto o processo estiver ativo. Não use estas credenciais fora deste serviço local.
