@@ -1,0 +1,13 @@
+{
+  "name": "qa-lab-cypress",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test": "cypress run --browser chrome"
+  },
+  "devDependencies": {
+    "cypress": "^15.1.0"
+  }
+}

@@ -7,6 +7,21 @@ Este repositório foi criado com o objetivo de **centralizar estudos, práticas 
 
 Aqui você encontrará conteúdos voltados tanto para **aprendizado contínuo** quanto para **aplicação prática em projetos reais**.
 
+## ✅ Laboratórios executáveis
+
+As suítes usam como sistema sob teste a [QAZANDO Shop](https://automationpratice.com.br/) e são independentes:
+
+| Projeto | Finalidade | Execução |
+|---|---|---|
+| [`automation/cypress`](automation/cypress) | E2E e smoke no navegador | `npm ci && npm test` |
+| [`automation/robot-framework`](automation/robot-framework) | UI keyword-driven | `robot --outputdir results tests` |
+| [`automation/k6`](automation/k6) | Smoke e carga HTTP | `k6 run scripts/smoke.js` |
+| [`bdd`](bdd) | BDD executável com Cucumber | `npm ci && npm test` |
+| [`api-tests/postman`](api-tests/postman) | Contratos das rotas via Postman CLI | `postman collection run ...` |
+| [`manual-testing`](manual-testing) | Plano, casos e template de defeitos | documentação |
+
+A estratégia consolidada está em [`documentation/test-strategy.md`](documentation/test-strategy.md). O CI executa as verificações independentes em paralelo por meio do GitHub Actions.
+
 ---
 
 ## 🚀 O que você vai encontrar neste repositório
@@ -145,7 +160,7 @@ qa-testing-repository
 🧠
 ![Status](https://img.shields.io/badge/Status-Active-success)
 ![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen)
-![GitHub Repo Size](https://img.shields.io/github/repo-size/SEU_USUARIO/SEU_REPOSITORIO)
-![Last Commit](https://img.shields.io/github/last-commit/SEU_USUARIO/SEU_REPOSITORIO)
+![GitHub Repo Size](https://img.shields.io/github/repo-size/ThiagoPhelip/Quality-Assurance-Lab)
+![Last Commit](https://img.shields.io/github/last-commit/ThiagoPhelip/Quality-Assurance-Lab)
 
 ✨ Sinta-se à vontade para explorar, estudar e evoluir!

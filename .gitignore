@@ -1,0 +1,14 @@
+node_modules/
+venv/
+.venv/
+__pycache__/
+*.pyc
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+reports/
+results/
+*.log
+.env
+.DS_Store
+

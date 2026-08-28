@@ -1,0 +1,12 @@
+{
+  "info": {
+    "name": "QAZANDO Shop - Health and Routes",
+    "description": "Valida disponibilidade e contrato HTML das rotas públicas. A aplicação não expõe uma API pública documentada.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    { "name": "Home", "request": { "method": "GET", "url": "{{baseUrl}}/" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('status 200', () => pm.response.to.have.status(200));", "pm.test('retorna HTML', () => pm.expect(pm.response.headers.get('Content-Type')).to.include('text/html'));", "pm.test('identifica aplicação', () => pm.expect(pm.response.text()).to.include('QAZANDO Shop E-Commerce'));"], "type": "text/javascript" } }] },
+    { "name": "Shop route", "request": { "method": "GET", "url": "{{baseUrl}}/shop" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('status 200', () => pm.response.to.have.status(200));", "pm.test('tempo aceitável', () => pm.expect(pm.response.responseTime).to.be.below(3000));"], "type": "text/javascript" } }] },
+    { "name": "Login route", "request": { "method": "GET", "url": "{{baseUrl}}/login" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('status 200', () => pm.response.to.have.status(200));"], "type": "text/javascript" } }] }
+  ]
+}
