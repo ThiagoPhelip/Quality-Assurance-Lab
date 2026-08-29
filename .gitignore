@@ -3,9 +3,9 @@ venv/
 .venv/
 __pycache__/
 *.pyc
-cypress/videos/
-cypress/screenshots/
-cypress/downloads/
+**/cypress/videos/
+**/cypress/screenshots/
+**/cypress/downloads/
 reports/
 results/
 .tmp-dashboard/

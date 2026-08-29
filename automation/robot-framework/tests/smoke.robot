@@ -22,7 +22,7 @@ Catálogo deve listar produtos
 Carrinho deve permitir avançar ao checkout
     Go To    ${BASE_URL}/cart
     Get Text    css=body    contains    Fit-Flare Dress
-    Get Element    css=a[href="/checkout-one"]
+    Get Element    css=a.theme-btn-one.btn_sm[href="/checkout-one"]
     Get Text    css=body    contains    PROCEED TO CHECKOUT
 
 Checkout deve apresentar endereço e ação final

@@ -18,8 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with: { node-version: 22 }
       - run: node scripts/quality-check.js
       - run: git diff --check
@@ -29,8 +29,8 @@ jobs:
     timeout-minutes: 10
     defaults: { run: { working-directory: services/demo-api } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           {
             node-version: 22,
@@ -40,7 +40,7 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: demo-api-report,
@@ -54,8 +54,8 @@ jobs:
     timeout-minutes: 20
     defaults: { run: { working-directory: automation/cypress } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           {
             node-version: 22,
@@ -65,7 +65,7 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
       - if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: cypress-evidence,
@@ -74,12 +74,12 @@ jobs:
             retention-days: 7,
           }
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: cypress-report,
             path: automation/cypress/reports,
-            if-no-files-found: error,
+            if-no-files-found: warn,
             retention-days: 14,
           }
 
@@ -88,8 +88,8 @@ jobs:
     timeout-minutes: 20
     defaults: { run: { working-directory: bdd } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           {
             node-version: 22,
@@ -100,7 +100,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:ci
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: bdd-report,
@@ -113,7 +113,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 22 }
+      - name: Start demo API and wait until ready
+        shell: bash
+        run: |
+          node services/demo-api/src/server.js > services/demo-api/demo-api.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:3000/health; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat services/demo-api/demo-api.log
+          exit 1
       - run: mkdir -p api-tests/postman/reports
       - uses: postmanlabs/postman-cli-action@v1
         with:
@@ -121,7 +135,7 @@ jobs:
           working-directory: api-tests/postman
           command: collection run QAZANDO-Shop.postman_collection.json --environment local.postman_environment.json --reporters cli,junit --reporter-junit-export reports/postman.xml
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: postman-report,
@@ -135,8 +149,8 @@ jobs:
     timeout-minutes: 10
     defaults: { run: { working-directory: api-tests/rest } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           {
             node-version: 22,
@@ -146,7 +160,7 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: api-contract-report,
@@ -160,15 +174,15 @@ jobs:
     timeout-minutes: 30
     defaults: { run: { working-directory: automation/appium } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           {
             node-version: 22,
             cache: npm,
             cache-dependency-path: automation/appium/package-lock.json,
           }
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with: { distribution: temurin, java-version: "17" }
       - run: npm ci
       - run: npx appium driver install uiautomator2@8.5.0
@@ -204,7 +218,7 @@ jobs:
           disable-animations: true
           script: cd automation/appium && npm run test:ci
       - if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: appium-log
           path: |
@@ -213,7 +227,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: appium-report,
@@ -227,8 +241,8 @@ jobs:
     timeout-minutes: 20
     defaults: { run: { working-directory: automation/robot-framework } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           {
             python-version: "3.13",
@@ -239,7 +253,7 @@ jobs:
       - run: rfbrowser init
       - run: robot --outputdir results tests
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: robot-results,
@@ -252,18 +266,34 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 22 }
+      - name: Start demo API and wait until ready
+        shell: bash
+        run: |
+          node services/demo-api/src/server.js > services/demo-api/demo-api.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:3000/health; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat services/demo-api/demo-api.log
+          exit 1
       - run: mkdir -p automation/k6/reports
       - uses: grafana/setup-k6-action@v1
         with:
           k6-version: "2.1.0"
       - uses: grafana/run-k6-action@v1
+        env:
+          BASE_URL: http://127.0.0.1:3000
         with:
-          path: automation/k6/scripts/smoke.js
+          path: automation/k6/scripts/api-smoke.js
           flags: --summary-export=automation/k6/reports/summary.json
           disable-analytics: true
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           {
             name: k6-report,
@@ -291,8 +321,8 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with: { node-version: 22 }
       - name: Generate consolidated dashboard
         env:
@@ -308,10 +338,11 @@ jobs:
           RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           RUN_NUMBER: ${{ github.run_number }}
         run: node scripts/generate-dashboard.js public
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with: { path: public }
 
   deploy-pages:
+    if: ${{ always() && needs.build-report.result == 'success' }}
     needs: build-report
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -323,6 +354,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

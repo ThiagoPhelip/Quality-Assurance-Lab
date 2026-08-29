@@ -14,10 +14,10 @@ Laboratório e portfólio de Qualidade de Software baseado na [QAZANDO Shop](htt
 | [`automation/cypress`](automation/cypress)                 | E2E web: autenticação, catálogo, carrinho e checkout | `npm ci && npm test`              |
 | [`automation/robot-framework`](automation/robot-framework) | UI keyword-driven                                    | `robot --outputdir results tests` |
 | [`automation/appium`](automation/appium)                   | Mobile web Android/Chrome                            | `npm ci && npm test`              |
-| [`automation/k6`](automation/k6)                           | Smoke e carga HTTP                                   | `k6 run scripts/smoke.js`         |
+| [`automation/k6`](automation/k6)                           | Smoke e carga HTTP                                   | `k6 run scripts/api-smoke.js`     |
 | [`bdd`](bdd)                                               | BDD executável com Cucumber e Playwright             | `npm ci && npm test`              |
 | [`api-tests/rest`](api-tests/rest)                         | Contratos HTTP da aplicação pública                  | `npm ci && npm test`              |
-| [`api-tests/postman`](api-tests/postman)                   | Coleção Postman executada pelo CLI oficial           | `postman collection run ...`      |
+| [`api-tests/postman`](api-tests/postman)                   | Contratos da demo API pelo Postman CLI               | `postman collection run ...`      |
 | [`services/demo-api`](services/demo-api)                   | API REST local: Bearer, CRUD e contratos de erro     | `npm ci && npm test`              |
 | [`manual-testing`](manual-testing)                         | Plano, casos e relatórios de defeito                 | documentação                      |
 
@@ -33,7 +33,7 @@ O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) executa os pro
 - API demonstrativa com limiares mínimos de cobertura;
 - Dependabot para npm, pip e GitHub Actions.
 
-Testes de carga sustentada não são disparados automaticamente contra o site público. Somente o smoke de baixo impacto participa do CI.
+Testes de carga e performance não são disparados automaticamente contra o site público. O CI executa um smoke determinístico contra a demo API local; o smoke externo permanece disponível apenas para execução manual.
 
 ## API demonstrativa
 
