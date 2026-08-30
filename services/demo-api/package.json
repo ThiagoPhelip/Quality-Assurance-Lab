@@ -2,12 +2,14 @@
   "name": "qa-lab-demo-api",
   "version": "1.0.0",
   "private": true,
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node src/server.js",
     "test": "node --test",
     "test:coverage": "node --test --experimental-test-coverage --test-coverage-lines=100 --test-coverage-branches=85 --test-coverage-functions=100",
     "pretest:ci": "node -e \"require('fs').mkdirSync('reports',{recursive:true})\"",
-    "test:ci": "node --test --experimental-test-coverage --test-coverage-lines=100 --test-coverage-branches=85 --test-coverage-functions=100 --test-reporter=junit --test-reporter-destination=reports/junit.xml"
+    "test:ci": "node --test --experimental-test-coverage --test-coverage-lines=100 --test-coverage-branches=85 --test-coverage-functions=100 --test-reporter=spec --test-reporter=junit --test-reporter-destination=stdout --test-reporter-destination=reports/junit.xml"
   }
 }

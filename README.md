@@ -3,6 +3,7 @@
 Laboratório e portfólio de Qualidade de Software baseado na [QAZANDO Shop](https://automationpratice.com.br/), com testes automatizados, documentação manual, API demonstrativa e quality gates em CI/CD.
 
 [![Quality Gates](https://github.com/ThiagoPhelip/Quality-Assurance-Lab/actions/workflows/ci.yml/badge.svg)](https://github.com/ThiagoPhelip/Quality-Assurance-Lab/actions/workflows/ci.yml)
+[![Dashboard](https://img.shields.io/badge/GitHub%20Pages-dashboard-2563eb)](https://thiagophelip.github.io/Quality-Assurance-Lab/)
 ![QA](https://img.shields.io/badge/Quality%20Assurance-QA-blue)
 ![Node](https://img.shields.io/badge/Node.js-22-green)
 ![Python](https://img.shields.io/badge/Python-3.13-blue)
@@ -23,7 +24,7 @@ Laboratório e portfólio de Qualidade de Software baseado na [QAZANDO Shop](htt
 
 ## Qualidade e CI/CD
 
-O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) executa os projetos de forma isolada e paralela, gera relatórios JUnit, preserva evidências de falha e publica um dashboard no GitHub Pages. O pipeline inclui:
+O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) executa os projetos de forma isolada, gera relatórios JUnit, preserva evidências de falha e publica um [dashboard no GitHub Pages](https://thiagophelip.github.io/Quality-Assurance-Lab/). Os gates determinísticos rodam em paralelo; as suítes que usam o site público são serializadas para limitar carga. O pipeline inclui:
 
 - quality check de JSON, placeholders e whitespace;
 - Cypress em Chrome e BDD em Chromium;
@@ -34,6 +35,8 @@ O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) executa os pro
 - Dependabot para npm, pip e GitHub Actions.
 
 Testes de carga e performance não são disparados automaticamente contra o site público. O CI executa um smoke determinístico contra a demo API local; o smoke externo permanece disponível apenas para execução manual.
+
+Cada runner que depende da QAZANDO Shop executa antes um preflight de páginas e bundle. Falha apenas de conectividade externa gera warning e estado `skipped` no dashboard — isso não representa aprovação da suíte. Se o target responder com contrato inválido, ou se um teste falhar depois do preflight, o gate continua bloqueante.
 
 ## API demonstrativa
 
@@ -64,4 +67,4 @@ Para reproduzir o conjunto principal localmente, use Node.js 22 e Python 3.13. A
 
 ## Resultado esperado
 
-Pull requests e pushes para `main` devem passar por todos os quality gates. Relatórios e screenshots são armazenados como artifacts por tempo limitado; o resumo da execução da branch principal é publicado automaticamente no GitHub Pages.
+Pull requests e pushes para `main` devem passar por todos os quality gates efetivamente executados. Gates locais e determinísticos são sempre bloqueantes; suítes dependentes do ambiente público podem ficar `skipped` somente quando o próprio runner comprova falta de conectividade. Relatórios e screenshots são armazenados como artifacts por tempo limitado; o resumo da branch principal é publicado automaticamente no GitHub Pages.

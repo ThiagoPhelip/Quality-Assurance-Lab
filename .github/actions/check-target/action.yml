@@ -1,0 +1,40 @@
+name: Check public test target
+description: Detects whether the public QAZANDO Shop is reachable from this runner
+inputs:
+  base-url:
+    description: Public application URL
+    required: false
+    default: https://automationpratice.com.br/
+outputs:
+  available:
+    description: Whether the target passed the availability probe
+    value: ${{ steps.probe.outputs.available }}
+runs:
+  using: composite
+  steps:
+    - id: probe
+      shell: bash
+      env:
+        BASE_URL: ${{ inputs.base-url }}
+      run: |
+        set +e
+        node "$GITHUB_WORKSPACE/scripts/check-target.js"
+        exit_code=$?
+        set -e
+
+        case "$exit_code" in
+          0)
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            ;;
+          2)
+            echo "::warning::Target externo sem conectividade neste runner; a suíte será ignorada."
+            echo "### Target externo sem conectividade — suíte ignorada" >> "$GITHUB_STEP_SUMMARY"
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            ;;
+          *)
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "::error::O target respondeu, mas não passou pelo contrato mínimo de disponibilidade."
+            echo "### Target alcançável com contrato mínimo inválido — gate reprovado" >> "$GITHUB_STEP_SUMMARY"
+            exit "$exit_code"
+            ;;
+        esac

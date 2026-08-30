@@ -50,8 +50,12 @@ jobs:
           }
 
   cypress:
+    if: ${{ !cancelled() }}
+    needs: api-contract
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      target_available: ${{ steps.target.outputs.available }}
     defaults: { run: { working-directory: automation/cypress } }
     steps:
       - uses: actions/checkout@v7
@@ -62,9 +66,13 @@ jobs:
             cache: npm,
             cache-dependency-path: automation/cypress/package-lock.json,
           }
-      - run: npm ci
-      - run: npm run test:ci
-      - if: failure()
+      - id: target
+        uses: ./.github/actions/check-target
+      - if: steps.target.outputs.available == 'true'
+        run: npm ci
+      - if: steps.target.outputs.available == 'true'
+        run: npm run test:ci
+      - if: ${{ failure() && steps.target.outcome == 'success' && steps.target.outputs.available == 'true' }}
         uses: actions/upload-artifact@v7
         with:
           {
@@ -73,7 +81,7 @@ jobs:
             if-no-files-found: ignore,
             retention-days: 7,
           }
-      - if: always()
+      - if: ${{ always() && steps.target.outcome == 'success' && steps.target.outputs.available == 'true' }}
         uses: actions/upload-artifact@v7
         with:
           {
@@ -84,8 +92,12 @@ jobs:
           }
 
   bdd:
+    if: ${{ !cancelled() }}
+    needs: cypress
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      target_available: ${{ steps.target.outputs.available }}
     defaults: { run: { working-directory: bdd } }
     steps:
       - uses: actions/checkout@v7
@@ -96,10 +108,15 @@ jobs:
             cache: npm,
             cache-dependency-path: bdd/package-lock.json,
           }
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:ci
-      - if: always()
+      - id: target
+        uses: ./.github/actions/check-target
+      - if: steps.target.outputs.available == 'true'
+        run: npm ci
+      - if: steps.target.outputs.available == 'true'
+        run: npx playwright install --with-deps chromium
+      - if: steps.target.outputs.available == 'true'
+        run: npm run test:ci
+      - if: ${{ always() && steps.target.outcome == 'success' && steps.target.outputs.available == 'true' }}
         uses: actions/upload-artifact@v7
         with:
           {
@@ -147,6 +164,8 @@ jobs:
   api-contract:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    outputs:
+      target_available: ${{ steps.target.outputs.available }}
     defaults: { run: { working-directory: api-tests/rest } }
     steps:
       - uses: actions/checkout@v7
@@ -157,9 +176,13 @@ jobs:
             cache: npm,
             cache-dependency-path: api-tests/rest/package-lock.json,
           }
-      - run: npm ci
-      - run: npm run test:ci
-      - if: always()
+      - id: target
+        uses: ./.github/actions/check-target
+      - if: steps.target.outputs.available == 'true'
+        run: npm ci
+      - if: steps.target.outputs.available == 'true'
+        run: npm run test:ci
+      - if: ${{ always() && steps.target.outcome == 'success' && steps.target.outputs.available == 'true' }}
         uses: actions/upload-artifact@v7
         with:
           {
@@ -170,8 +193,12 @@ jobs:
           }
 
   appium:
+    if: ${{ !cancelled() }}
+    needs: robot
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    outputs:
+      target_available: ${{ steps.target.outputs.available }}
     defaults: { run: { working-directory: automation/appium } }
     steps:
       - uses: actions/checkout@v7
@@ -182,18 +209,25 @@ jobs:
             cache: npm,
             cache-dependency-path: automation/appium/package-lock.json,
           }
-      - uses: actions/setup-java@v6
+      - id: target
+        uses: ./.github/actions/check-target
+      - if: steps.target.outputs.available == 'true'
+        uses: actions/setup-java@v6
         with: { distribution: temurin, java-version: "17" }
-      - run: npm ci
-      - run: npx appium driver install uiautomator2@8.5.0
-      - name: Enable KVM
+      - if: steps.target.outputs.available == 'true'
+        run: npm ci
+      - if: steps.target.outputs.available == 'true'
+        run: npx appium driver install uiautomator2@8.5.0
+      - if: steps.target.outputs.available == 'true'
+        name: Enable KVM
         shell: bash
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' |
             sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      - name: Start Appium and wait until ready
+      - if: steps.target.outputs.available == 'true'
+        name: Start Appium and wait until ready
         shell: bash
         run: |
           npx appium \
@@ -209,7 +243,8 @@ jobs:
           done
           tail -n 100 appium-console.log
           exit 1
-      - uses: reactivecircus/android-emulator-runner@v2
+      - if: steps.target.outputs.available == 'true'
+        uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
           target: google_apis
@@ -217,7 +252,7 @@ jobs:
           profile: pixel_6
           disable-animations: true
           script: cd automation/appium && npm run test:ci
-      - if: failure()
+      - if: ${{ failure() && steps.target.outcome == 'success' && steps.target.outputs.available == 'true' }}
         uses: actions/upload-artifact@v7
         with:
           name: appium-log
@@ -226,7 +261,7 @@ jobs:
             automation/appium/appium-console.log
           if-no-files-found: ignore
           retention-days: 7
-      - if: always()
+      - if: ${{ always() && steps.target.outcome == 'success' && steps.target.outputs.available == 'true' }}
         uses: actions/upload-artifact@v7
         with:
           {
@@ -237,22 +272,34 @@ jobs:
           }
 
   robot:
+    if: ${{ !cancelled() }}
+    needs: bdd
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      target_available: ${{ steps.target.outputs.available }}
     defaults: { run: { working-directory: automation/robot-framework } }
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 22 }
+      - id: target
+        uses: ./.github/actions/check-target
+      - if: steps.target.outputs.available == 'true'
+        uses: actions/setup-python@v7
         with:
           {
             python-version: "3.13",
             cache: pip,
             cache-dependency-path: automation/robot-framework/requirements.txt,
           }
-      - run: pip install -r requirements.txt
-      - run: rfbrowser init
-      - run: robot --outputdir results tests
-      - if: always()
+      - if: steps.target.outputs.available == 'true'
+        run: pip install -r requirements.txt
+      - if: steps.target.outputs.available == 'true'
+        run: rfbrowser init
+      - if: steps.target.outputs.available == 'true'
+        run: robot --outputdir results tests
+      - if: ${{ always() && steps.target.outcome == 'success' && steps.target.outputs.available == 'true' }}
         uses: actions/upload-artifact@v7
         with:
           {
@@ -328,13 +375,13 @@ jobs:
         env:
           STATUS_QUALITY: ${{ needs.quality.result }}
           STATUS_DEMO_API: ${{ needs['demo-api'].result }}
-          STATUS_API_CONTRACT: ${{ needs['api-contract'].result }}
+          STATUS_API_CONTRACT: ${{ needs['api-contract'].result != 'success' && needs['api-contract'].result || (needs['api-contract'].outputs.target_available == 'true' && 'success' || 'skipped') }}
           STATUS_POSTMAN: ${{ needs.postman.result }}
-          STATUS_CYPRESS: ${{ needs.cypress.result }}
-          STATUS_BDD: ${{ needs.bdd.result }}
-          STATUS_ROBOT: ${{ needs.robot.result }}
+          STATUS_CYPRESS: ${{ needs.cypress.result != 'success' && needs.cypress.result || (needs.cypress.outputs.target_available == 'true' && 'success' || 'skipped') }}
+          STATUS_BDD: ${{ needs.bdd.result != 'success' && needs.bdd.result || (needs.bdd.outputs.target_available == 'true' && 'success' || 'skipped') }}
+          STATUS_ROBOT: ${{ needs.robot.result != 'success' && needs.robot.result || (needs.robot.outputs.target_available == 'true' && 'success' || 'skipped') }}
           STATUS_PERFORMANCE_SMOKE: ${{ needs['performance-smoke'].result }}
-          STATUS_APPIUM: ${{ needs.appium.result }}
+          STATUS_APPIUM: ${{ needs.appium.result != 'success' && needs.appium.result || (needs.appium.outputs.target_available == 'true' && 'success' || 'skipped') }}
           RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           RUN_NUMBER: ${{ github.run_number }}
         run: node scripts/generate-dashboard.js public
