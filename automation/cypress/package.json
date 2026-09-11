@@ -10,7 +10,7 @@
     "test:ci": "cypress run --browser chrome --reporter mocha-junit-reporter --reporter-options mochaFile=reports/junit-[hash].xml,toConsole=true"
   },
   "devDependencies": {
-    "cypress": "^15.1.0",
+    "cypress": "^16.0.0",
     "mocha-junit-reporter": "^2.2.1"
   },
   "overrides": {
