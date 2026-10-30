@@ -15,6 +15,6 @@
     "test:ci": "node --test --test-concurrency=1 --test-reporter=spec --test-reporter=junit --test-reporter-destination=stdout --test-reporter-destination=reports/junit.xml"
   },
   "devDependencies": {
-    "appium": "3.7.0"
+    "appium": "3.9.0"
   }
 }
